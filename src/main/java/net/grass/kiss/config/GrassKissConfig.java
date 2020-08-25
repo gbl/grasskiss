@@ -1,6 +1,7 @@
 package net.grass.kiss.config;
 
 import com.google.gson.annotations.Expose;
+import java.util.*;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import me.shedaniel.clothconfig2.gui.entries.StringListListEntry;
@@ -10,8 +11,6 @@ import net.grass.kiss.config.rule.Rules;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.item.Item;
 import net.minecraft.text.TranslatableText;
-
-import java.util.*;
 
 public class GrassKissConfig {
     /**
@@ -55,16 +54,16 @@ public class GrassKissConfig {
     private SortedSet<Rule> rules = new TreeSet<>(Comparator.comparingInt(Rule::getPriority).thenComparing(Rule::hashCode));
 
     static Screen createConfigScreen(Screen parent) {
-        ConfigBuilder builder = ConfigBuilder.create().setParentScreen(parent).setTitle(String.format("config.%s.title", GrassKiss.MOD_ID));
+        ConfigBuilder builder = ConfigBuilder.create().setParentScreen(parent).setTitle(new TranslatableText("config.%s.title", GrassKiss.MOD_ID));
         GrassKissConfig config = GrassKissConfigManager.getConfig();
-        builder.getOrCreateCategory("general")
-                .addEntry(ConfigEntryBuilder.create().startBooleanToggle(ConfigTexts.APPLY_SWORDS.asString(), config.applySwords).setDefaultValue(true).setSaveConsumer(b -> config.applySwords = b).build())
-                .addEntry(ConfigEntryBuilder.create().startBooleanToggle(ConfigTexts.APPLY_AXES.asString(), config.applyAxes).setDefaultValue(true).setSaveConsumer(b -> config.applyAxes = b).build())
-                .addEntry(ConfigEntryBuilder.create().startBooleanToggle(ConfigTexts.APPLY_PICKAXES.asString(), config.applyPickaxes).setDefaultValue(false).setSaveConsumer(b -> config.applyPickaxes = b).build())
-                .addEntry(ConfigEntryBuilder.create().startBooleanToggle(ConfigTexts.APPLY_HOES.asString(), config.applyHoes).setDefaultValue(false).setSaveConsumer(b -> config.applyHoes = b).build())
-                .addEntry(ConfigEntryBuilder.create().startBooleanToggle(ConfigTexts.APPLY_SHOVELS.asString(), config.applyShovels).setDefaultValue(false).setSaveConsumer(b -> config.applyShovels = b).build())
-                .addEntry(ConfigEntryBuilder.create().startBooleanToggle(ConfigTexts.APPLY_TRIDENTS.asString(), config.applyTridents).setDefaultValue(true).setSaveConsumer(b -> config.applyTridents = b).build())
-                .addEntry(ConfigEntryBuilder.create().startStrList(ConfigTexts.APPLY_ITEMS.asString(), config.getApplyItems()).setExpended(true).setTooltip(ConfigTexts.APPLY_ITEMS_TOOLTIP.asString()).setCreateNewInstance(baseListEntry -> new StringListListEntry.StringListCell("minecraft:stone", (StringListListEntry) baseListEntry)).setDefaultValue(new ArrayList<>()).setSaveConsumer(items -> config.applyItems = items).build());
+        builder.getOrCreateCategory(new TranslatableText("general"))
+                .addEntry(ConfigEntryBuilder.create().startBooleanToggle(ConfigTexts.APPLY_SWORDS, config.applySwords).setDefaultValue(true).setSaveConsumer(b -> config.applySwords = b).build())
+                .addEntry(ConfigEntryBuilder.create().startBooleanToggle(ConfigTexts.APPLY_AXES, config.applyAxes).setDefaultValue(true).setSaveConsumer(b -> config.applyAxes = b).build())
+                .addEntry(ConfigEntryBuilder.create().startBooleanToggle(ConfigTexts.APPLY_PICKAXES, config.applyPickaxes).setDefaultValue(false).setSaveConsumer(b -> config.applyPickaxes = b).build())
+                .addEntry(ConfigEntryBuilder.create().startBooleanToggle(ConfigTexts.APPLY_HOES, config.applyHoes).setDefaultValue(false).setSaveConsumer(b -> config.applyHoes = b).build())
+                .addEntry(ConfigEntryBuilder.create().startBooleanToggle(ConfigTexts.APPLY_SHOVELS, config.applyShovels).setDefaultValue(false).setSaveConsumer(b -> config.applyShovels = b).build())
+                .addEntry(ConfigEntryBuilder.create().startBooleanToggle(ConfigTexts.APPLY_TRIDENTS, config.applyTridents).setDefaultValue(true).setSaveConsumer(b -> config.applyTridents = b).build())
+                .addEntry(ConfigEntryBuilder.create().startStrList(ConfigTexts.APPLY_ITEMS, config.getApplyItems()).setExpended(true).setTooltip(ConfigTexts.APPLY_ITEMS_TOOLTIP).setCreateNewInstance(baseListEntry -> new StringListListEntry.StringListCell("minecraft:stone", (StringListListEntry) baseListEntry)).setDefaultValue(new ArrayList<>()).setSaveConsumer(items -> config.applyItems = items).build());
         builder.setSavingRunnable(GrassKissConfigManager::save);
         return builder.build();
     }
