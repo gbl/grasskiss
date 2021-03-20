@@ -17,7 +17,7 @@ sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
 ext.Versions = new Properties()
-Versions.load(file("Versionfiles/mcversion-21w08b.properties").newReader())
+Versions.load(file("Versionfiles/mcversion-21w11a.properties").newReader())
 
 archivesBaseName = "grasskiss"
 ext.projectVersion = "0.3.0"
